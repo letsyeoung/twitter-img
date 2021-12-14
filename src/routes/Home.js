@@ -1,21 +1,19 @@
+import Twit from 'components/Twit';
 import { dbService } from 'fBase';
 import React, { useEffect, useState } from 'react';
 
-const Home = () => {
+const Home = ({userObj}) => {
   const [twt, setTwt] = useState("");
   const [twitter, setTwitter] = useState([]);
-  const getTwts = async () => {
-    const dbTwitter = await dbService.collection("twitter").get();
-    dbTwitter.forEach((document) => {
-      const twtObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setTwitter((prev) => [twtObject, ...prev]);
-    });
-  };
+
   useEffect(() => {
-    getTwts();
+    dbService.collection("twitter").onSnapshot((snapshot) => {
+      const twtArray = snapshot.docs.map(doc => ({
+        id:doc.id, 
+        ...doc.data(),
+      }));
+      setTwitter(twtArray);
+    });
   }, []);
 
   const onSubmit = async (event) => {
@@ -23,6 +21,7 @@ const Home = () => {
     await dbService.collection("twitter").add({
       twt,
       createdAt : Date.now(),
+      creatorId: userObj.uid,
     });
     setTwt("");
   };
@@ -32,7 +31,6 @@ const Home = () => {
     } = event;
      setTwt(value);
   }
-  console.log(twitter)
 
 return(
   <div>
@@ -46,11 +44,13 @@ return(
       <input type="submit" value="enter" />
     </form>
     <div>
-      {twitter.map((twt) => (
-        <div>
-          <h4>{twt.twt}</h4>
-        </div>
-        ))}
+      {twitter.map((twitter) => (
+        <Twit 
+          key={twitter.id} 
+          twitObj={twitter}
+          isOwner={twitter.creatorId=== userObj.uid} 
+        />
+        ))} 
     </div>
   </div>
   )

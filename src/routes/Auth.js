@@ -10,9 +10,9 @@ const Auth = () => {
     const {
       target: {name, value},
     } = event;
-    if (name == "email") {
+    if (name === "email") {
       setEmail(value);
-    }else if (name == "password") {
+    }else if (name === "password") {
       setPassword(value);
     }
   };
@@ -38,7 +38,7 @@ const Auth = () => {
     } = event;
 
     let provider;
-    if (name == "google") {
+    if (name === "google") {
       provider = new firebaseinstance.auth.GoogleAuthProvider();
     }
     const data = await authService.signInWithPopup(provider);
