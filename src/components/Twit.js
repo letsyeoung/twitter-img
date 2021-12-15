@@ -19,7 +19,7 @@ const Twit = ({ twitObj, isOwner }) => {
     event.preventDefault();
     console.log(twitObj, newTwit)
     await dbService.doc(`twitter/${twitObj.id}`).update({
-      text:newTwit
+      twt:newTwit
     });
     setEditing(false);
   }
