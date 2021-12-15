@@ -6,16 +6,18 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [newAccount, setNewAccount] = useState(true);
   const [error, setError] = useState("");
+  
   const onChange = (event) => {
     const {
       target: {name, value},
     } = event;
-    if (name == "email") {
+    if (name === "email") {
       setEmail(value);
-    }else if (name == "password") {
+    }else if (name === "password") {
       setPassword(value);
     }
   };
+  
   const onSubmit = async(event) => {
     event.preventDefault();
     try {
@@ -38,9 +40,9 @@ const Auth = () => {
     } = event;
 
     let provider;
-    if (name == "google") {
+    if (name === "google") {
       provider = new firebaseinstance.auth.GoogleAuthProvider();
-    }
+    } 
     const data = await authService.signInWithPopup(provider);
     console.log(data);
   }
@@ -71,7 +73,7 @@ const Auth = () => {
       </span>
       <div>
         <button onClick={onSocialClick} name="google">Continue withe Google</button>
-        </div>
+\      </div>
     </div>
   );
 }
