@@ -4,15 +4,11 @@ import { authService } from 'fBase';
  
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggendIn] = useState(authService.currentUser);
   const [userObj, setUserObj] = useState(null);
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggendIn(true);
         setUserObj(user);
-      } else {
-        setIsLoggendIn(false);
       }
       setInit(true);
     });
@@ -21,7 +17,7 @@ function App() {
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn = {isLoggedIn} userObj={userObj} />
+        <AppRouter isLoggedIn = {Boolean(userObj)} userObj={userObj} />
        ) : (
          "기다려..."
        )} 

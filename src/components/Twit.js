@@ -35,7 +35,9 @@ const Twit = ({ twitObj, isOwner }) => {
       {
         editing ? (
           <>
-            <form onSubmit={onSubmit}>
+            {isOwner && (
+              <>
+              <form onSubmit={onSubmit}>
               <input 
                 type="text" 
                 placeholder="수정할끼니.." 
@@ -43,8 +45,10 @@ const Twit = ({ twitObj, isOwner }) => {
                 required
                 onChange={onChange} />
                 <input type="submit" value="웅!" />
-            </form>
-            <button onClick={toggleEditing}>취소</button>
+              </form>
+              <button onClick={toggleEditing}>취소</button>
+              </>
+            )}
           </>
           ) : ( 
           <>
