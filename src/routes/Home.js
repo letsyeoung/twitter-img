@@ -1,6 +1,8 @@
 import Twit from 'components/Twit';
-import { dbService } from 'fBase';
+import { v4 as uuidv4 } from 'uuid';
+import { dbService, storageService } from 'fBase';
 import React, { useEffect, useState } from 'react';
+
 
 const Home = ({userObj}) => {
   const [twt, setTwt] = useState("");
@@ -19,13 +21,24 @@ const Home = ({userObj}) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await dbService.collection("twitter").add({
-      twt,
-      createdAt : Date.now(),
-      creatorId: userObj.uid,
-    });
+    let attachmentUrl = "";
+    if (attachment !== "") {
+      const attachmentRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+      const reponse = await attachmentRef.putString(attachment, "data_url");
+      attachmentUrl = await reponse.ref.getDownloadURL();
+    }
+      const twtObj = {
+              text: twt,
+              createdAt: Date.now(),
+              creatorId: userObj.uid,
+              attachmentUrl, 
+            };
+
+    await dbService.collection("twitter").add(twtObj);
     setTwt("");
+    setAttachment("");
   };
+
   const onChange = (event) => {
     const {
       target: { value }
@@ -47,7 +60,7 @@ const Home = ({userObj}) => {
     }
     reader.readAsDataURL(theFile); 
   };
-  const onClearAttachment = () => setAttachment(null);
+  const onClearAttachment = () => {setAttachment("")}
 
 return(
   <div>

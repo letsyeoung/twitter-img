@@ -1,4 +1,4 @@
-import { dbService } from 'fBase';
+import { dbService, storageService } from 'fBase';
 import React from 'react';
 import { useState } from 'react';
 
@@ -11,6 +11,7 @@ const Twit = ({ twitObj, isOwner }) => {
     console.log(ok);
     if (ok) {
       await dbService.doc(`twitter/${twitObj.id}`).delete();
+      await storageService.refFromURL(twitObj.attachmentUrl).delete();
     }
   };
 
@@ -52,7 +53,10 @@ const Twit = ({ twitObj, isOwner }) => {
           </>
           ) : ( 
           <>
-            <h4>{twitObj.twt}</h4>
+            <h4>{twitObj.text}</h4>
+            {twitObj.attachmentUrl && (
+                <img src={twitObj.attachmentUrl} width="50px" height="50px" />
+            )}
             {isOwner && (
               <>
                 <button onClick={onDeleteClick}>삭제</button>
