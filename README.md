@@ -1,2 +1,0 @@
-# twitter
- react and firebase
