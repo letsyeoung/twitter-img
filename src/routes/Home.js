@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 const Home = ({userObj}) => {
   const [twt, setTwt] = useState("");
   const [twitter, setTwitter] = useState([]);
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState("");
 
   useEffect(() => {
     dbService.collection("twitter").onSnapshot((snapshot) => {

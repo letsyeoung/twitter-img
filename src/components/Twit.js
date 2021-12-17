@@ -15,6 +15,8 @@ const Twit = ({ twitObj, isOwner }) => {
     }
   };
 
+  
+
   const toggleEditing = () => setEditing((prev) => !prev);  
   const onSubmit = async(event) => {
     event.preventDefault();
